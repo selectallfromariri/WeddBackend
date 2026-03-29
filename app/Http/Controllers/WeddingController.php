@@ -41,7 +41,7 @@ class WeddingController extends Controller
         
         if(!$wedding){
             return response()->json([
-                'message' => 'Wedding not found'
+                'message' => 'No wedding yet'
             ], 404);
         }
         
@@ -98,4 +98,21 @@ class WeddingController extends Controller
             'data' => $wedding,
         ]);
     }
+    public function showByCode($wedding_code)
+{
+    $wedding = Wedding::where('wedding_code', $wedding_code)
+                      ->where('is_published', true)
+                      ->with([
+                          'tentatives' => fn($q) => $q->where('is_published', true)->orderBy('time'),
+                          'bankQr'     => fn($q) => $q->where('is_published', true),
+                      ])
+                      ->first();
+
+    if (!$wedding) {
+        return response()->json(['message' => 'Wedding not found'], 404);
+    }
+
+    return response()->json(['data' => $wedding]);
+}
+
 }

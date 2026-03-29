@@ -96,7 +96,7 @@ class TentativeController extends Controller
         if(!$wedding){
             return response()->json(['error' => 'Wedding not found'], 404);
         }
-        $tentatives = Tentative::where('wedding_id', $wedding->id)->update(['published' => true]);
+        $tentatives = Tentative::where('wedding_id', $wedding->id)->update(['is_published' => true]);
 
         return response()->json([
             'message' => 'Tentatives published successfully',

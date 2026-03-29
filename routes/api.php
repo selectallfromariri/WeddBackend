@@ -6,7 +6,9 @@ use App\Http\Controllers\WeddingController;
 use App\Http\Controllers\TentativeController;
 use App\Http\Controllers\BankQrController;
 use App\Http\Controllers\RsvpController;
+use App\Http\Controllers\PhotoController;
 
+Route::get('wedding/code/{wedding_code}', [WeddingController::class, 'showByCode']);
 Route::post('auth/login', [AuthController::class, 'login']);
 Route::post('auth/register', [AuthController::class, 'register']);
 
@@ -30,10 +32,10 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('bankqr/store', [BankQrController::class, 'store']);
     Route::post('bankqr/publish', [BankQrController::class, 'publish']);
 
-    //rsvp visitor
-    Route::post('visitor/rsvp/{wedding_code}', [RsvpController::class, 'store']);
-
     //photo route 
     Route::post('photo/store/{wedding_code}', [PhotoController::class, 'store']);
     Route::get('photo/index/{wedding_code}', [PhotoController::class, 'index']);
+    // visitor routes
+    Route::post('visitor/rsvp/{wedding_code}', [RsvpController::class, 'store']);
+    Route::get('visitor/rsvp/{wedding_code}',  [RsvpController::class, 'show']);
 });

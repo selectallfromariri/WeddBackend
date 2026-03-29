@@ -10,6 +10,8 @@ class PhotoController extends Controller
 {
     public function store(Request $request, $wedding_code)
     {
+        $user = $request->user();
+        
         $validated = $request->validate([
             'image_url' => 'required|image|mimes:jpg,jpeg,png|max:2048',
         ]);
@@ -34,6 +36,7 @@ class PhotoController extends Controller
 
     public function index(Request $request, $wedding_code)
     {
+        $user = $request->user();
         $wedding = Wedding::where('wedding_code', $wedding_code)->first();
 
         if (!$wedding) {

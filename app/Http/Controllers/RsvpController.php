@@ -34,6 +34,25 @@ class RsvpController extends Controller
 
     }
 
+    public function show(Request $request, $wedding_code)
+{
+    $wedding = Wedding::where('wedding_code', $wedding_code)->first();
+
+    if (!$wedding) {
+        return response()->json(['message' => 'Wedding not found'], 404);
+    }
+
+    $rsvp = Rsvp::where('wedding_id', $wedding->id)
+                 ->where('visitor_id', $request->user()->id)
+                 ->first();
+
+    if (!$rsvp) {
+        return response()->json(['message' => 'No RSVP found'], 404);
+    }
+
+    return response()->json(['data' => $rsvp]);
+}
+
     public function store(Request $request, $wedding_code){
         $user = $request->user();
         if(!$user){
